@@ -13,12 +13,12 @@ O projeto será desenvolvido em **Java**, seguindo os requisitos e modelos defin
 * João Pedro Oliveira Batisteli
 
 ## Histórias de Usuário
-### Usuários: Aluno, Professor, Secretaria
-- **UC01** Como aluno, quero selecionar as disciplinas em que desejo me matricular.  
-- **UC02** Como aluno, quero cancelar uma matrícula feita anteriormente, para ajustar minha grade.  
-- **UC03** Como professor, quero consultar quais alunos estão matriculados em minhas disciplinas.  
-- **UC04** Como secretaria, quero gerar o currículo de cada semestre e manter as informações sobre disciplinas, professores e alunos.   
-- **UC05** Como usuário, quero fazer login com minha senha para acessar o sistema.  
+### Atores: Aluno, Professor, Secretaria, Usuário
+- **US01** Como aluno, quero selecionar as disciplinas em que desejo me matricular.  
+- **US02** Como aluno, quero cancelar uma matrícula feita anteriormente, para ajustar minha grade.  
+- **US03** Como professor, quero consultar quais alunos estão matriculados em minhas disciplinas.  
+- **US04** Como secretaria, quero gerar o currículo de cada semestre e manter as informações sobre disciplinas, professores e alunos.   
+- **US05** Como usuário, quero fazer login com minha senha para acessar o sistema.  
 
 ## Instruções de utilização
 Assim que a primeira versão do sistema estiver disponível, deverá complementar com as instruções de utilização. Descreva como instalar eventuais dependências e como executar a aplicação.
