@@ -1,4 +1,4 @@
 public enum TipoDisciplina {
-    OPTATIVA,
-    OBRIGATORIA
+    OBRIGATORIA,
+    OPTATIVA
 }
