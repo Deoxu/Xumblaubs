@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
 
-public class Aluno extends Usuario implements IMatricula {
+public class Aluno extends Usuario {
     private String matriculaAluno;
     private List<Matricula> matriculas;
     
@@ -11,13 +11,48 @@ public class Aluno extends Usuario implements IMatricula {
         this.matriculas = new ArrayList<>();
     }
     
-    public Matricula matricular(Disciplina d, Curriculo c, TipoDisciplina t) {
+    public Matricula matricular(Disciplina d, Curriculo c, TipoDisciplina t, Secretaria secretaria) {
+        // Verificar se está no período de matrícula
+        if (!secretaria.podeMatricular()) {
+            throw new IllegalStateException("Fora do período de matrícula");
+        }
+        
+        // Verificar limites de matrícula
+        int obrigatoriasAtivas = contarMatriculasAtivas(TipoDisciplina.OBRIGATORIA);
+        int optativasAtivas = contarMatriculasAtivas(TipoDisciplina.OPTATIVA);
+        
+        if (t == TipoDisciplina.OBRIGATORIA && obrigatoriasAtivas >= 4) {
+            throw new IllegalStateException("Limite de 4 disciplinas obrigatórias atingido");
+        }
+        
+        if (t == TipoDisciplina.OPTATIVA && optativasAtivas >= 2) {
+            throw new IllegalStateException("Limite de 2 disciplinas optativas atingido");
+        }
+        
         Matricula matricula = d.inscrever(this, t);
+        matricula.setCurriculo(c);
         this.matriculas.add(matricula);
+        
+        // Notificar sistema de cobrança
+        matricula.notificarCobranca();
+        
         return matricula;
     }
     
-    public void cancelar(Matricula m) {
+    private int contarMatriculasAtivas(TipoDisciplina tipo) {
+        int count = 0;
+        for (Matricula matricula : matriculas) {
+            if (matricula.getStatus() == StatusMatricula.ATIVA && matricula.getTipo() == tipo) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
+    public void cancelar(Matricula m, Secretaria secretaria) {
+        if (!secretaria.podeCancelar()) {
+            throw new IllegalStateException("Fora do período de cancelamento");
+        }
         m.cancelar();
     }
     
@@ -29,16 +64,6 @@ public class Aluno extends Usuario implements IMatricula {
             }
         }
         return matriculasCurriculo;
-    }
-    
-    public boolean estaMatriculado(Disciplina disciplina, Curriculo curriculo) {
-        for (Matricula matricula : matriculas) {
-            if (matricula.getDisciplina().equals(disciplina) && 
-                matricula.getStatus() == StatusMatricula.ATIVA) {
-                return true;
-            }
-        }
-        return false;
     }
     
     // Getters e Setters

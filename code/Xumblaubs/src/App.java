@@ -1,10 +1,12 @@
+import java.util.List;
+
 public class App {
     public static void main(String[] args) {
-        System.out.println("=== SISTEMA DE GESTÃO ACADÊMICA COM INTERFACES ===\n");
+        System.out.println("=== SISTEMA DE GESTÃO ACADÊMICA ===\n");
         
-        // Criando uma instância da Secretaria usando a interface IGestaoAcademica
-        IGestaoAcademica secretaria = new Secretaria("SEC001", "Maria Silva", "maria@universidade.edu", "senha123");
-        System.out.println("Secretaria criada: " + ((Secretaria)secretaria).getNome() + "\n");
+        // Criando uma instância da Secretaria
+        Secretaria secretaria = new Secretaria("SEC001", "Maria Silva", "maria@universidade.edu", "senha123");
+        System.out.println("Secretaria criada: " + secretaria.getNome() + "\n");
         
         // 1. Gerando um currículo
         System.out.println("1. GERANDO CURRÍCULO:");
@@ -58,29 +60,61 @@ public class App {
         professor2.adicionarDisciplina(disciplina3);
         System.out.println();
         
-        // 7. Demonstrando matrículas
-        System.out.println("7. REALIZANDO MATRÍCULAS:");
+        // 7. Definindo períodos de matrícula
+        System.out.println("7. DEFININDO PERÍODOS DE MATRÍCULA:");
+        java.util.Date agora = new java.util.Date();
+        java.util.Date fim = new java.util.Date(agora.getTime() + 7 * 24 * 60 * 60 * 1000); // 7 dias
+        
+        secretaria.definirPeriodoMatricula(agora, fim, "MATRICULA");
+        secretaria.definirPeriodoMatricula(agora, fim, "CANCELAMENTO");
+        System.out.println();
+        
+        // 8. Configurando sistema de cobrança
+        System.out.println("8. CONFIGURANDO SISTEMA DE COBRANÇA:");
+        SistemaCobrancas sistemaCobrancas = new SistemaCobrancas();
+        Matricula.setSistemaCobrancas(sistemaCobrancas);
+        System.out.println("Sistema de cobrança configurado\n");
+        
+        // 9. Demonstrando matrículas
+        System.out.println("9. REALIZANDO MATRÍCULAS:");
         try {
-            aluno1.matricular(disciplina1, curriculo2024_1, TipoDisciplina.OBRIGATORIA);
-            aluno1.matricular(disciplina3, curriculo2024_1, TipoDisciplina.OBRIGATORIA);
-            aluno2.matricular(disciplina1, curriculo2024_1, TipoDisciplina.OBRIGATORIA);
+            aluno1.matricular(disciplina1, curriculo2024_1, TipoDisciplina.OBRIGATORIA, secretaria);
+            aluno1.matricular(disciplina3, curriculo2024_1, TipoDisciplina.OBRIGATORIA, secretaria);
+            aluno2.matricular(disciplina1, curriculo2024_1, TipoDisciplina.OBRIGATORIA, secretaria);
+            aluno3.matricular(disciplina1, curriculo2024_1, TipoDisciplina.OBRIGATORIA, secretaria);
             
             System.out.println("Matrículas realizadas com sucesso!");
             System.out.println("Aluno " + aluno1.getNome() + " matriculado em " + disciplina1.getNome());
             System.out.println("Aluno " + aluno1.getNome() + " matriculado em " + disciplina3.getNome());
             System.out.println("Aluno " + aluno2.getNome() + " matriculado em " + disciplina1.getNome());
+            System.out.println("Aluno " + aluno3.getNome() + " matriculado em " + disciplina1.getNome());
         } catch (Exception e) {
             System.out.println("Erro na matrícula: " + e.getMessage());
         }
         System.out.println();
         
-        // 8. Demonstrando cancelamento de matrícula
-        System.out.println("8. CANCELANDO MATRÍCULA:");
-        aluno1.cancelar(aluno1.getMatriculas().get(0));
-        System.out.println("Matrícula cancelada pelo aluno " + aluno1.getNome() + "\n");
+        // 10. Demonstrando cancelamento de matrícula
+        System.out.println("10. CANCELANDO MATRÍCULA:");
+        try {
+            aluno1.cancelar(aluno1.getMatriculas().get(0), secretaria);
+            System.out.println("Matrícula cancelada pelo aluno " + aluno1.getNome());
+        } catch (Exception e) {
+            System.out.println("Erro no cancelamento: " + e.getMessage());
+        }
+        System.out.println();
         
-        // 9. Listando informações do sistema
-        System.out.println("9. RESUMO DO SISTEMA:");
+        // 11. Demonstrando funcionalidade do professor
+        System.out.println("11. PROFESSOR LISTANDO ALUNOS:");
+        List<Aluno> alunosDisciplina = professor1.listarAlunos(disciplina1, curriculo2024_1);
+        System.out.println();
+        
+        // 12. Encerrando período de matrícula
+        System.out.println("12. ENCERRANDO PERÍODO DE MATRÍCULA:");
+        secretaria.encerrarPeriodoMatricula();
+        System.out.println();
+        
+        // 13. Listando informações do sistema
+        System.out.println("13. RESUMO DO SISTEMA:");
         System.out.println("Total de alunos cadastrados: " + secretaria.listarAlunos().size());
         System.out.println("Total de professores cadastrados: " + secretaria.listarProfessores().size());
         System.out.println("Total de disciplinas cadastradas: " + secretaria.listarDisciplinas().size());
