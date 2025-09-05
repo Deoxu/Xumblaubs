@@ -1,0 +1,4 @@
+id;nome;email;senha;idProfessor
+PROF001;João Santos;joao@universidade.edu;123;P001
+PROF002;Ana Costa;ana@universidade.edu;123;P002
+PROF003;Marcos Almeida;marcos@universidade.edu;123;P003
