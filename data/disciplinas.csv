@@ -1,0 +1,11 @@
+codigo;nome;creditos;ativa;inscritos;cursoCodigo
+MAT001;Calculo I;4;true;0;ENG001
+FIS001;Fisica I;4;true;0;ENG001
+PROG001;Programacao I;6;true;0;ENG001
+BD001;Banco de Dados I;4;true;0;ENG001
+POO001;Programacao Orientada a Objetos;6;true;0;ENG001
+SO001;Sistemas Operacionais;4;true;0;ENG001
+ADM101;Introducao a Administracao;4;true;0;ADM001
+ADM102;Gestao de Pessoas;4;true;0;ADM001
+AEDS001;Algoritimos e Estruturas de Dados II;6;true;0;ENG001
+ECO101;Economia I;4;true;0;ADM001

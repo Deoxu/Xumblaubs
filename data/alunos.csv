@@ -1,0 +1,8 @@
+id;nome;email;senha;matricula
+ALU1001;Pedro Oliveira;pedro@estudante.edu;123;2025001
+ALU1002;Carla Mendes;carla@estudante.edu;123;2025002
+ALU1003;Lucas Ferreira;lucas@estudante.edu;123;2025003
+ALU1004;Fernanda Souza;fernanda@estudante.edu;123;2025004
+ALU1005;Rafael Lima;rafael@estudante.edu;123;2025005
+ALU1006;Arthur Santos;arthur@estudante.edu;123;2025006
+ALU001;Aluno Padrão;aluno@estudante.edu;aluno;2025A001

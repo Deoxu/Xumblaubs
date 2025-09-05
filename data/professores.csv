@@ -1,0 +1,6 @@
+id;nome;email;senha;idProfessor
+PROF1001;Joao Santos;joao@universidade.edu;123;P1001
+PROF1002;Ana Costa;ana@universidade.edu;123;P1002
+PROF1003;Marcos Almeida;marcos@universidade.edu;123;P1003
+PROFDEF;prof;prof@universidade.edu;prof;PDEF
+PROF1004;Carlos Silva;carlos@universidade.edu;123;P1004
