@@ -1,5 +1,4 @@
 import java.util.*;
-import java.io.*;
 
 public class CLI {
     private final Scanner sc = new Scanner(System.in);
@@ -14,10 +13,11 @@ public class CLI {
 
     // --- helper: normaliza string para ASCII (remove acentos/Unicode) ---
     private static String ascii(String s) {
-        if (s == null) return "";
+        if (s == null)
+            return "";
         String norm = java.text.Normalizer.normalize(s, java.text.Normalizer.Form.NFD);
         norm = norm.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-        return norm.replace('–','-').replace('—','-');
+        return norm.replace('–', '-').replace('—', '-');
     }
 
     public void start() {
@@ -31,11 +31,20 @@ public class CLI {
             String op = sc.nextLine().trim();
 
             switch (op) {
-                case "1": loginAluno(); break;
-                case "2": loginProfessor(); break;
-                case "3": loginSecretaria(); break;
-                case "0": System.out.println("Saindo..."); return;
-                default: System.out.println("Opcao invalida.");
+                case "1":
+                    loginAluno();
+                    break;
+                case "2":
+                    loginProfessor();
+                    break;
+                case "3":
+                    loginSecretaria();
+                    break;
+                case "0":
+                    System.out.println("Saindo...");
+                    return;
+                default:
+                    System.out.println("Opcao invalida.");
             }
         }
     }
@@ -70,20 +79,33 @@ public class CLI {
             String op = sc.nextLine().trim();
 
             switch (op) {
-                case "1": listarDisciplinasDeCurriculo(); break;
-                case "2": acaoMatricular(aluno); break;
-                case "3": acaoCancelar(aluno); break;
-                case "4": listarMinhasMatriculas(aluno); break;
-                case "5": finalizarInscricaoENotificar(aluno); break;
-                case "0": return;
-                default: System.out.println("Opcao invalida.");
+                case "1":
+                    listarDisciplinasDeCurriculo();
+                    break;
+                case "2":
+                    acaoMatricular(aluno);
+                    break;
+                case "3":
+                    acaoCancelar(aluno);
+                    break;
+                case "4":
+                    listarMinhasMatriculas(aluno);
+                    break;
+                case "5":
+                    finalizarInscricaoENotificar(aluno);
+                    break;
+                case "0":
+                    return;
+                default:
+                    System.out.println("Opcao invalida.");
             }
         }
     }
 
     private void listarDisciplinasDeCurriculo() {
         Curriculo c = escolherCurriculo();
-        if (c == null) return;
+        if (c == null)
+            return;
 
         String cursoLabel = (c.getCurso() != null)
                 ? (c.getCurso().getCodigo() + " - " + ascii(c.getCurso().getNome()))
@@ -104,7 +126,8 @@ public class CLI {
             return;
         }
         Curriculo c = escolherCurriculo();
-        if (c == null) return;
+        if (c == null)
+            return;
 
         System.out.print("Codigo da disciplina: ");
         String cod = sc.nextLine().trim();
@@ -140,7 +163,8 @@ public class CLI {
             return;
         }
         Curriculo c = escolherCurriculo();
-        if (c == null) return;
+        if (c == null)
+            return;
 
         List<Matricula> mats = aluno.obterMatriculas(c);
         if (mats.isEmpty()) {
@@ -168,7 +192,8 @@ public class CLI {
 
     private void listarMinhasMatriculas(Aluno aluno) {
         Curriculo c = escolherCurriculo();
-        if (c == null) return;
+        if (c == null)
+            return;
 
         List<Matricula> mats = aluno.obterMatriculas(c);
         if (mats.isEmpty()) {
@@ -183,7 +208,8 @@ public class CLI {
 
     private void finalizarInscricaoENotificar(Aluno aluno) {
         Curriculo c = escolherCurriculo();
-        if (c == null) return;
+        if (c == null)
+            return;
         secretaria.notificarCobrancaDoSemestre(aluno, c, cobrancas);
         System.out.println("Cobranca consolidada (idempotente) para " + ascii(aluno.getNome())
                 + " em " + c.getAno() + "/" + c.getSemestre());
@@ -217,7 +243,8 @@ public class CLI {
             switch (op) {
                 case "1":
                     Curriculo c = escolherCurriculo();
-                    if (c == null) break;
+                    if (c == null)
+                        break;
                     System.out.print("Codigo da disciplina: ");
                     String cod = sc.nextLine().trim();
                     Disciplina d = secretaria.getDisciplinas().stream()
@@ -235,8 +262,10 @@ public class CLI {
                                 + " | " + ascii(a.getNome())));
                     }
                     break;
-                case "0": return;
-                default: System.out.println("Opcao invalida.");
+                case "0":
+                    return;
+                default:
+                    System.out.println("Opcao invalida.");
             }
         }
     }
@@ -278,57 +307,129 @@ public class CLI {
                     secretaria.gerarCurriculo(ano, sem);
                     break;
                 case "2":
-                    System.out.print("id: "); String idA = sc.nextLine();
-                    System.out.print("nome: "); String nmA = ascii(sc.nextLine());
-                    System.out.print("email: "); String emA = sc.nextLine();
-                    System.out.print("senha: "); String seA = sc.nextLine();
-                    System.out.print("matricula: "); String ra = sc.nextLine();
+                    System.out.print("id: ");
+                    String idA = sc.nextLine();
+                    System.out.print("nome: ");
+                    String nmA = ascii(sc.nextLine());
+                    System.out.print("email: ");
+                    String emA = sc.nextLine();
+                    System.out.print("senha: ");
+                    String seA = sc.nextLine();
+                    System.out.print("matricula: ");
+                    String ra = sc.nextLine();
                     secretaria.cadastrarAluno(new Aluno(idA, nmA, emA, seA, ra));
                     break;
                 case "3":
-                    System.out.print("id: "); String idP = sc.nextLine();
-                    System.out.print("nome: "); String nmP = ascii(sc.nextLine());
-                    System.out.print("email: "); String emP = sc.nextLine();
-                    System.out.print("senha: "); String seP = sc.nextLine();
-                    System.out.print("idProfessor: "); String sip = sc.nextLine();
+                    System.out.print("id: ");
+                    String idP = sc.nextLine();
+                    System.out.print("nome: ");
+                    String nmP = ascii(sc.nextLine());
+                    System.out.print("email: ");
+                    String emP = sc.nextLine();
+                    System.out.print("senha: ");
+                    String seP = sc.nextLine();
+                    System.out.print("idProfessor: ");
+                    String sip = sc.nextLine();
                     secretaria.cadastrarProfessor(new Professor(idP, nmP, emP, seP, sip));
                     break;
-                case "4":
+                case "4": {
                     System.out.print("Curso (codigo, nome, creditosTotais): ");
                     String[] parts = sc.nextLine().split(",");
-                    if (parts.length < 3) { System.out.println("Entrada invalida."); break; }
-                    Curso curso = new Curso(parts[0].trim(), ascii(parts[1].trim()), parseIntSafe(parts[2].trim()));
+                    if (parts.length < 3) {
+                        System.out.println("Entrada invalida.");
+                        break;
+                    }
+                    String codCurso = parts[0].trim();
+                    String nomeCurso = parts[1].trim();
+                    int credTotais = parseIntSafe(parts[2].trim());
+
+                    // Busca curso pelo codigo; se nao existir, cadastra
+                    Curso curso = secretaria.getCursos().stream()
+                            .filter(cu -> codCurso.equalsIgnoreCase(cu.getCodigo()))
+                            .findFirst()
+                            .orElseGet(() -> {
+                                Curso novo = new Curso(codCurso, nomeCurso, credTotais);
+                                secretaria.cadastrarCurso(novo);
+                                return novo;
+                            });
 
                     System.out.print("Disciplina (codigo, nome, creditos): ");
                     String[] dparts = sc.nextLine().split(",");
-                    if (dparts.length < 3) { System.out.println("Entrada invalida."); break; }
-                    Disciplina d = new Disciplina(dparts[0].trim(), ascii(dparts[1].trim()), parseIntSafe(dparts[2].trim()));
+                    if (dparts.length < 3) {
+                        System.out.println("Entrada invalida.");
+                        break;
+                    }
+                    Disciplina d = new Disciplina(dparts[0].trim(), dparts[1].trim(), parseIntSafe(dparts[2].trim()));
                     secretaria.cadastrarDisciplina(d, curso);
 
-                    Curriculo ultimo = secretaria.getCurriculos().isEmpty() ? null
-                            : secretaria.getCurriculos().get(secretaria.getCurriculos().size() - 1);
-                    if (ultimo != null) {
-                        try {
-                            ultimo.adicionarDisciplina(d);
-                            System.out.println("Disciplina adicionada ao curriculo " + ultimo.getAno() + "/" + ultimo.getSemestre());
-                        } catch (Exception ex) {
-                            System.out.println("Aviso: " + ascii(ex.getMessage()));
+                    // Oferecer para adicionar a um curriculo DO MESMO CURSO
+                    List<Curriculo> currsDoCurso = new ArrayList<>();
+                    for (Curriculo cx : secretaria.getCurriculos()) {
+                        if (cx.getCurso() != null && cx.getCurso().equals(curso)) {
+                            currsDoCurso.add(cx);
                         }
                     }
+
+                    if (currsDoCurso.isEmpty()) {
+                        System.out.println(
+                                "Nao ha curriculo do curso " + curso.getNome() + ". Use 'Gerar curriculo' primeiro.");
+                        break;
+                    }
+
+                    System.out.println("Adicionar a qual curriculo do curso " + curso.getNome() + "?");
+                    for (int i = 0; i < currsDoCurso.size(); i++) {
+                        Curriculo cx = currsDoCurso.get(i);
+                        System.out.printf("%d) %d/%d%n", (i + 1), cx.getAno(), cx.getSemestre());
+                    }
+                    System.out.print("Escolha (ou 0 para nao adicionar): ");
+                    int idx = parseIntSafe(sc.nextLine()) - 1;
+                    if (idx >= 0 && idx < currsDoCurso.size()) {
+                        try {
+                            currsDoCurso.get(idx).adicionarDisciplina(d);
+                            System.out.println("Disciplina adicionada ao curriculo " +
+                                    currsDoCurso.get(idx).getAno() + "/" + currsDoCurso.get(idx).getSemestre());
+                        } catch (Exception ex) {
+                            System.out.println("Aviso: " + ex.getMessage());
+                        }
+                    } else {
+                        System.out.println("Disciplina cadastrada no curso, sem adicionar a curriculo.");
+                    }
                     break;
-                case "5":
-                    System.out.print("Data inicio (millis): "); long ini = parseLongSafe(sc.nextLine());
-                    System.out.print("Data fim (millis): "); long fim = parseLongSafe(sc.nextLine());
-                    System.out.print("Tipo (MATRICULA/CANCELAMENTO): "); String tp = sc.nextLine().trim().toUpperCase();
+                }
+
+                case "5": {
+                    System.out.println("Definir periodo (aceita: millis | vazio=padrao | AAAA-MM-DD | +Nd | 'agora')");
+                    System.out.print("Data inicio: ");
+                    String iniStr = sc.nextLine();
+                    long ini = millisFrom(iniStr); // vazio/now/+Nd/AAAA-MM-DD/numero
+
+                    System.out.print("Data fim: ");
+                    String fimStr = sc.nextLine();
+                    long fim = fimStr.trim().isEmpty() ? millisFrom("+7d") : millisFrom(fimStr);
+
+                    System.out.print("Tipo (MATRICULA/CANCELAMENTO): ");
+                    String tp = sc.nextLine().trim().toUpperCase();
+
+                    if (ini <= 0 || fim <= 0 || fim <= ini) {
+                        System.out.println("Datas invalidas.");
+                        break;
+                    }
+
                     try {
+                        System.out.println("Inicio resolvido: " + new Date(ini));
+                        System.out.println("Fim resolvido   : " + new Date(fim));
                         secretaria.definirPeriodoMatricula(new Date(ini), new Date(fim), TipoPeriodo.valueOf(tp));
+                        System.out.println("Periodo definido com sucesso.");
                     } catch (Exception e) {
                         System.out.println("Tipo invalido.");
                     }
                     break;
+                }
+
                 case "6":
                     Curriculo c = escolherCurriculo();
-                    if (c != null) secretaria.encerrarPeriodoMatricula(c);
+                    if (c != null)
+                        secretaria.encerrarPeriodoMatricula(c);
                     break;
                 case "7":
                     FileStore.exportarCSV(secretaria);
@@ -338,10 +439,49 @@ public class CLI {
                     FileStore.importarCSV(secretaria);
                     System.out.println("Importacao basica concluida.");
                     break;
-                case "0": return;
+                case "0":
+                    return;
                 default:
                     System.out.println("Opcao invalida.");
             }
+        }
+    }
+
+    // Converte entradas amigaveis em millis:
+    // "" / "agora" / "now" -> agora
+    // "+Nd" -> agora + N dias
+    // "AAAA-MM-DD" -> meia-noite desse dia
+    // numero -> usa como millis
+    private static long millisFrom(String s) {
+        if (s == null)
+            return -1L;
+        String x = s.trim();
+        if (x.isEmpty() || x.equalsIgnoreCase("agora") || x.equalsIgnoreCase("now")) {
+            return System.currentTimeMillis();
+        }
+        if (x.matches("^\\+?\\d+[dD]$")) {
+            int days = Integer.parseInt(x.replaceAll("[^0-9]", ""));
+            return System.currentTimeMillis() + days * 24L * 60L * 60L * 1000L;
+        }
+        if (x.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+            String[] parts = x.split("-");
+            int year = Integer.parseInt(parts[0]);
+            int month = Integer.parseInt(parts[1]); // 1..12
+            int day = Integer.parseInt(parts[2]);
+            java.util.Calendar cal = java.util.Calendar.getInstance();
+            cal.set(java.util.Calendar.YEAR, year);
+            cal.set(java.util.Calendar.MONTH, month - 1); // Calendar: 0..11
+            cal.set(java.util.Calendar.DAY_OF_MONTH, day);
+            cal.set(java.util.Calendar.HOUR_OF_DAY, 0);
+            cal.set(java.util.Calendar.MINUTE, 0);
+            cal.set(java.util.Calendar.SECOND, 0);
+            cal.set(java.util.Calendar.MILLISECOND, 0);
+            return cal.getTimeInMillis();
+        }
+        try {
+            return Long.parseLong(x);
+        } catch (Exception e) {
+            return -1L;
         }
     }
 
@@ -373,10 +513,11 @@ public class CLI {
     }
 
     private static int parseIntSafe(String s) {
-        try { return Integer.parseInt(s.trim()); } catch (Exception e) { return -1; }
+        try {
+            return Integer.parseInt(s.trim());
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
-    private static long parseLongSafe(String s) {
-        try { return Long.parseLong(s.trim()); } catch (Exception e) { return -1L; }
-    }
 }

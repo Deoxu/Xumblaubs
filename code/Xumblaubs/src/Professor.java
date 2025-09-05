@@ -11,27 +11,28 @@ public class Professor extends Usuario {
         this.disciplinasMinistradas = new ArrayList<>();
     }
 
-    // 6) Agora filtra por currículo: só matrículas ATIVAS e que pertençam ao currículo c
     public List<Aluno> listarAlunos(Disciplina d, Curriculo c) {
         List<Aluno> alunosDisciplina = new ArrayList<>();
+        if (d == null || c == null) return alunosDisciplina;
+
         for (Matricula m : d.getMatriculas()) {
             if (m.getStatus() == StatusMatricula.ATIVA && c.equals(m.getCurriculo())) {
                 alunosDisciplina.add(m.getAluno());
             }
         }
-        System.out.println("Listando " + alunosDisciplina.size() + " alunos da disciplina " + d.getNome()
-                + " no currículo " + c.getAno() + "/" + c.getSemestre());
+        System.out.println("Listando " + alunosDisciplina.size() + " aluno(s) da disciplina "
+                + d.getNome() + " no curriculo " + c.getAno() + "/" + c.getSemestre());
         return alunosDisciplina;
     }
 
     public List<Disciplina> listarDisciplinas(Curriculo c) {
-        List<Disciplina> disciplinasCurriculo = new ArrayList<>();
-        for (Disciplina disciplina : disciplinasMinistradas) {
-            if (c.getDisciplinas().contains(disciplina)) {
-                disciplinasCurriculo.add(disciplina);
+        List<Disciplina> res = new ArrayList<>();
+        for (Disciplina d : disciplinasMinistradas) {
+            if (c.getDisciplinas().contains(d)) {
+                res.add(d);
             }
         }
-        return disciplinasCurriculo;
+        return res;
     }
 
     public void adicionarDisciplina(Disciplina disciplina) {
@@ -41,12 +42,9 @@ public class Professor extends Usuario {
         }
     }
 
-    // Getters e Setters
+    // Getters / Setters
     public String getIdProfessor() { return idProfessor; }
     public void setIdProfessor(String idProfessor) { this.idProfessor = idProfessor; }
-
     public List<Disciplina> getDisciplinasMinistradas() { return disciplinasMinistradas; }
-    public void setDisciplinasMinistradas(List<Disciplina> disciplinasMinistradas) {
-        this.disciplinasMinistradas = disciplinasMinistradas;
-    }
+    public void setDisciplinasMinistradas(List<Disciplina> disciplinasMinistradas) { this.disciplinasMinistradas = disciplinasMinistradas; }
 }

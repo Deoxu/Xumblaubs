@@ -21,11 +21,14 @@ public class Curriculo {
     }
 
     public void adicionarDisciplina(Disciplina d) {
-        // validação: só aceita disciplinas do mesmo curso (se definido)
-        if (this.curso != null && d.getCurso() != null && d.getCurso() != this.curso) {
+        if (d == null) {
+            throw new IllegalArgumentException("Disciplina invalida");
+        }
+        // Se houver curso no curriculo e curso na disciplina, valida se sao do mesmo
+        // curso
+        if (this.getCurso() != null && d.getCurso() != null && !this.getCurso().equals(d.getCurso())) {
             throw new IllegalArgumentException(
-                "Disciplina " + d.getCodigo() + " não pertence ao curso " + this.curso.getNome()
-            );
+                    "Disciplina " + d.getCodigo() + " nao pertence ao curso " + this.getCurso().getNome());
         }
         if (!this.disciplinas.contains(d)) {
             this.disciplinas.add(d);
@@ -47,15 +50,35 @@ public class Curriculo {
     }
 
     // Getters e Setters
-    public Curso getCurso() { return curso; }
-    public void setCurso(Curso curso) { this.curso = curso; }
+    public Curso getCurso() {
+        return curso;
+    }
 
-    public int getAno() { return ano; }
-    public void setAno(int ano) { this.ano = ano; }
+    public void setCurso(Curso curso) {
+        this.curso = curso;
+    }
 
-    public int getSemestre() { return semestre; }
-    public void setSemestre(int semestre) { this.semestre = semestre; }
+    public int getAno() {
+        return ano;
+    }
 
-    public List<Disciplina> getDisciplinas() { return disciplinas; }
-    public void setDisciplinas(List<Disciplina> disciplinas) { this.disciplinas = disciplinas; }
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public int getSemestre() {
+        return semestre;
+    }
+
+    public void setSemestre(int semestre) {
+        this.semestre = semestre;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public void setDisciplinas(List<Disciplina> disciplinas) {
+        this.disciplinas = disciplinas;
+    }
 }

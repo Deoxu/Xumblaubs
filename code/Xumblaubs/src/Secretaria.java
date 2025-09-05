@@ -89,8 +89,10 @@ public class Secretaria extends Usuario {
             c.adicionarDisciplina(d);
             System.out.println("Disciplina " + d.getNome() + " cadastrada no curso " + c.getNome());
         } else {
-            if (d.getCurso() == null) d.setCurso(c);
-            if (!c.getDisciplinas().contains(d)) c.adicionarDisciplina(d);
+            if (d.getCurso() == null)
+                d.setCurso(c);
+            if (!c.getDisciplinas().contains(d))
+                c.adicionarDisciplina(d);
             System.out.println("Disciplina " + d.getNome() + " atualizada no curso " + c.getNome());
         }
         return d;
@@ -98,35 +100,59 @@ public class Secretaria extends Usuario {
 
     /* ====================== CONSULTAS ====================== */
 
-    public List<Aluno> listarAlunos() { return new ArrayList<>(alunos); }
-    public List<Professor> listarProfessores() { return new ArrayList<>(professores); }
-    public List<Disciplina> listarDisciplinas() { return new ArrayList<>(disciplinas); }
-    public List<Curriculo> listarCurriculos() { return new ArrayList<>(curriculos); }
+    public List<Aluno> listarAlunos() {
+        return new ArrayList<>(alunos);
+    }
+
+    public List<Professor> listarProfessores() {
+        return new ArrayList<>(professores);
+    }
+
+    public List<Disciplina> listarDisciplinas() {
+        return new ArrayList<>(disciplinas);
+    }
+
+    public List<Curriculo> listarCurriculos() {
+        return new ArrayList<>(curriculos);
+    }
 
     // ==== GETTERS usados pelo FileStore (faltavam) ====
-    public List<Aluno> getAlunos() { return alunos; }
-    public List<Professor> getProfessores() { return professores; }
-    public List<Disciplina> getDisciplinas() { return disciplinas; }
-    public List<Curriculo> getCurriculos() { return curriculos; }
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public List<Professor> getProfessores() {
+        return professores;
+    }
+
+    public List<Disciplina> getDisciplinas() {
+        return disciplinas;
+    }
+
+    public List<Curriculo> getCurriculos() {
+        return curriculos;
+    }
 
     /* ====================== PERÍODOS DE MATRÍCULA ====================== */
 
     public void definirPeriodoMatricula(Date inicio, Date fim, TipoPeriodo tipo) {
         PeriodoMatricula periodo = new PeriodoMatricula(inicio, fim, tipo);
         this.periodosMatricula.add(periodo);
-        System.out.println("Período de " + tipo + " definido de " + inicio + " até " + fim);
+        System.out.println("Periodo de " + tipo + " definido de " + inicio + " ate " + fim);
     }
 
     public boolean podeMatricular() {
         for (PeriodoMatricula periodo : periodosMatricula) {
-            if (periodo.podeMatricular()) return true;
+            if (periodo.podeMatricular())
+                return true;
         }
         return false;
     }
 
     public boolean podeCancelar() {
         for (PeriodoMatricula periodo : periodosMatricula) {
-            if (periodo.podeCancelar()) return true;
+            if (periodo.podeCancelar())
+                return true;
         }
         return false;
     }
@@ -142,7 +168,8 @@ public class Secretaria extends Usuario {
 
     public void notificarCobrancaDoSemestre(Aluno a, Curriculo c, ISistemaCobrancas cobrancas) {
         String chave = a.getMatriculaAluno() + ":" + c.getAno() + "/" + c.getSemestre();
-        if (cobrancaEmitida.contains(chave)) return;
+        if (cobrancaEmitida.contains(chave))
+            return;
 
         List<Disciplina> discs = new ArrayList<>();
         for (Matricula m : a.getMatriculas()) {

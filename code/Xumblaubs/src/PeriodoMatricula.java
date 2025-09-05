@@ -1,26 +1,22 @@
 import java.util.Date;
-import java.util.Objects;
 
 public class PeriodoMatricula {
-    private final Date dataInicio;
-    private final Date dataFim;
-    private final TipoPeriodo tipo; // MATRICULA ou CANCELAMENTO
+    private Date dataInicio;
+    private Date dataFim;
+    private TipoPeriodo tipo; // MATRICULA ou CANCELAMENTO
 
     public PeriodoMatricula(Date dataInicio, Date dataFim, TipoPeriodo tipo) {
-        Objects.requireNonNull(dataInicio, "dataInicio não pode ser nula");
-        Objects.requireNonNull(dataFim, "dataFim não pode ser nula");
-        Objects.requireNonNull(tipo, "tipo não pode ser nulo");
-        if (!dataInicio.before(dataFim)) {
-            throw new IllegalArgumentException("dataInicio deve ser anterior a dataFim");
+        if (dataInicio == null || dataFim == null || tipo == null || !dataFim.after(dataInicio)) {
+            throw new IllegalArgumentException("Periodo invalido");
         }
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.tipo = tipo;
     }
 
+    // Limites INCLUSIVOS: inicio <= agora <= fim
     public boolean estaAtivo() {
         Date agora = new Date();
-        // inclusivo nas bordas
         return !agora.before(dataInicio) && !agora.after(dataFim);
     }
 
@@ -32,8 +28,28 @@ public class PeriodoMatricula {
         return tipo == TipoPeriodo.CANCELAMENTO && estaAtivo();
     }
 
-    // Getters
-    public Date getDataInicio() { return dataInicio; }
-    public Date getDataFim() { return dataFim; }
-    public TipoPeriodo getTipo() { return tipo; }
+    // Getters/Setters
+    public Date getDataInicio() {
+        return dataInicio;
+    }
+
+    public void setDataInicio(Date dataInicio) {
+        this.dataInicio = dataInicio;
+    }
+
+    public Date getDataFim() {
+        return dataFim;
+    }
+
+    public void setDataFim(Date dataFim) {
+        this.dataFim = dataFim;
+    }
+
+    public TipoPeriodo getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(TipoPeriodo tipo) {
+        this.tipo = tipo;
+    }
 }

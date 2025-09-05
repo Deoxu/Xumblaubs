@@ -12,44 +12,45 @@ public class Aluno extends Usuario {
     }
 
     public Matricula matricular(Disciplina d, Curriculo c, TipoDisciplina t, Secretaria secretaria) {
-        // 1) Verificar se a disciplina faz parte do currículo informado
-        if (!c.getDisciplinas().contains(d)) {
-            throw new IllegalStateException("Disciplina não ofertada neste currículo/semestre");
-        }
-
-        // 2) Verificar se está no período de matrícula
         if (!secretaria.podeMatricular()) {
-            throw new IllegalStateException("Fora do período de matrícula");
+            throw new IllegalStateException("Fora do periodo de matricula");
+        }
+        if (d == null || c == null) {
+            throw new IllegalArgumentException("Disciplina ou curriculo invalido");
+        }
+        // A disciplina precisa estar no curriculo escolhido (sem misturar cursos/semestres)
+        if (!c.getDisciplinas().contains(d)) {
+            throw new IllegalArgumentException("Disciplina nao faz parte do curriculo selecionado");
         }
 
-        // 3) Verificar limites por tipo
+        // Limites por CURRICULO (semestre): 4 obrigatorias + 2 optativas
         int obrigatoriasAtivas = contarMatriculasAtivas(TipoDisciplina.OBRIGATORIA, c);
-        int optativasAtivas = contarMatriculasAtivas(TipoDisciplina.OPTATIVA, c);
+        int optativasAtivas    = contarMatriculasAtivas(TipoDisciplina.OPTATIVA, c);
 
         if (t == TipoDisciplina.OBRIGATORIA && obrigatoriasAtivas >= 4) {
-            throw new IllegalStateException("Limite de 4 disciplinas obrigatórias atingido");
+            throw new IllegalStateException("Limite de 4 disciplinas obrigatorias atingido neste curriculo");
         }
         if (t == TipoDisciplina.OPTATIVA && optativasAtivas >= 2) {
-            throw new IllegalStateException("Limite de 2 disciplinas optativas atingido");
+            throw new IllegalStateException("Limite de 2 disciplinas optativas atingido neste curriculo");
         }
 
-        // 4) Inscrever na disciplina (duplicidade e vagas são checadas na própria disciplina)
+        // Inscreve na disciplina (confere ativa/capacidade/duplicidade)
         Matricula matricula = d.inscrever(this, t);
         matricula.setCurriculo(c);
         this.matriculas.add(matricula);
 
-        // (IMPORTANTE) Removido: notificação de cobrança por matrícula (agora é consolidada por semestre)
-        // matricula.notificarCobranca();
+        // >>> Removido: cobranca por disciplina. A cobranca agora e consolidada por semestre
+        // via Secretaria.notificarCobrancaDoSemestre(...)
 
         return matricula;
     }
 
-    private int contarMatriculasAtivas(TipoDisciplina tipo, Curriculo c) {
+    private int contarMatriculasAtivas(TipoDisciplina tipo, Curriculo curriculo) {
         int count = 0;
         for (Matricula m : matriculas) {
             if (m.getStatus() == StatusMatricula.ATIVA
                 && m.getTipo() == tipo
-                && c.equals(m.getCurriculo())) {
+                && curriculo.equals(m.getCurriculo())) {
                 count++;
             }
         }
@@ -58,36 +59,27 @@ public class Aluno extends Usuario {
 
     public void cancelar(Matricula m, Secretaria secretaria) {
         if (!secretaria.podeCancelar()) {
-            throw new IllegalStateException("Fora do período de cancelamento");
+            throw new IllegalStateException("Fora do periodo de cancelamento");
+        }
+        if (m == null || !this.matriculas.contains(m)) {
+            throw new IllegalArgumentException("Matricula invalida");
         }
         m.cancelar();
     }
 
-    // 2) Agora filtra por currículo informado
     public List<Matricula> obterMatriculas(Curriculo c) {
-        List<Matricula> matriculasCurriculo = new ArrayList<>();
+        List<Matricula> res = new ArrayList<>();
         for (Matricula m : matriculas) {
             if (m.getStatus() == StatusMatricula.ATIVA && c.equals(m.getCurriculo())) {
-                matriculasCurriculo.add(m);
+                res.add(m);
             }
         }
-        return matriculasCurriculo;
+        return res;
     }
 
-    // Getters e Setters
-    public String getMatriculaAluno() {
-        return matriculaAluno;
-    }
-
-    public void setMatriculaAluno(String matriculaAluno) {
-        this.matriculaAluno = matriculaAluno;
-    }
-
-    public List<Matricula> getMatriculas() {
-        return matriculas;
-    }
-
-    public void setMatriculas(List<Matricula> matriculas) {
-        this.matriculas = matriculas;
-    }
+    // Getters / Setters
+    public String getMatriculaAluno() { return matriculaAluno; }
+    public void setMatriculaAluno(String matriculaAluno) { this.matriculaAluno = matriculaAluno; }
+    public List<Matricula> getMatriculas() { return matriculas; }
+    public void setMatriculas(List<Matricula> matriculas) { this.matriculas = matriculas; }
 }
